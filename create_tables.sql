@@ -1,5 +1,5 @@
 show databases;	 -- tampilkan database
-use tokoku_project;
+use tokoku_project; -- pakai database
 
 -- DROP 
 DROP TABLE transactions;
