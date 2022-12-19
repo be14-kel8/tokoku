@@ -1,4 +1,4 @@
-show databases;
+show databases;	 -- tampilkan database
 use tokoku_project;
 
 -- DROP 
