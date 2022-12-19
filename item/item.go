@@ -9,7 +9,7 @@ type Item struct {
 	quantity   int
 }
 
-//method item
+//method set (untuk mempersiapkan properti yang bisa diakses)
 
 func (i *Item) SetIdItem(newIdItem int){
 	i.idItem = newIdItem
@@ -26,18 +26,21 @@ func (i *Item) SetQuantity(newQuantity int){
 	i.quantity = newQuantity
 }
 
-func (i *Item) getIdItem() int {
+// method Get ( untuk menginisialisasi atribute dengan method)
+func (i *Item) GetIdItem() int {
 	return i.idItem
 }
 
-func (i *Item) getIDEmployee() int {
-	return i.id
+func (i *Item) GetIDEmployee() int {
+	return i.idEmployee
 }
 
-func (i *Item) getItemName() int {
-	return i.idItemName
+func (i *Item) GetItemName() string {
+	return i.itemName
 }
-
+func (i *Item) GetNewQuantity() int {
+	return i.quantity
+}
 
 
 
