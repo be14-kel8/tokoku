@@ -45,7 +45,26 @@ func main() {
 
 					switch menuAdm {
 					case 1:
-
+						var newEmp employee.Employee
+						var tmpS string
+						fmt.Print("Inseret username :")
+						fmt.Scanln(&tmpS)
+						newEmp.SetUsername(tmpS)
+						fmt.Print("Insert name ")
+						fmt.Scanln(&tmpS)
+						newEmp.SetName(tmpS)
+						fmt.Print("Insert password ")
+						fmt.Scanln(&tmpS)
+						newEmp.SetPassword(tmpS)
+						res, err := employeeAuth.RegisterEmp(newEmp)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Register Success")
+						} else {
+							fmt.Println("Register Failed")
+						}
 					case 2:
 
 					case 3:
