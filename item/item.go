@@ -3,6 +3,8 @@ package item
 import (
 	"database/sql"
 	"errors"
+	"fmt"
+	"log"
 )
 
 type Item struct {
@@ -72,6 +74,64 @@ func (ia *ItemAuth) InsertItem(newItem Item) (bool, error) {
 	if affectedRows <= 0 {
 
 		return false, errors.New("0 affected rows")
+	}
+	return true, nil
+}
+
+func (ia *ItemAuth) ShowItems() {
+	rows, err := ia.DB.Query("SELECT * FROM items")
+	if err != nil {
+		errors.New("Error select query")
+	}
+	defer rows.Close()
+
+	tmpId, tmpIdE, tmpQ := 0, 0, 0
+	tmpName := ""
+	var item Item
+	var items []Item
+	for rows.Next() {
+		err := rows.Scan(&tmpId, &tmpIdE, &tmpName, &tmpQ)
+		if err != nil {
+			errors.New("Error scan ")
+		}
+		item.SetIdItem(tmpId)
+		item.SetIdEmployee(tmpIdE)
+		item.SetItemName(tmpName)
+		item.SetQuantity(tmpQ)
+		items = append(items, item)
+	}
+	// tanya mas jerry
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range items {
+		fmt.Println("")
+		fmt.Println("ID Item\t\t: ", v.idItem)
+		fmt.Println("ID Employee\t: ", v.idEmployee)
+		fmt.Println("Item Name \t: ", v.itemName)
+		fmt.Println("Item Quantity\t: ", v.quantity)
+	}
+}
+
+func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
+	deleteQry, err := ia.DB.Prepare("DELETE FROM items WHERE id_item = ?")
+	if err != nil {
+		return false, errors.New("Error delete query")
+	}
+
+	res, err := deleteQry.Exec(idItem)
+	if err != nil {
+		return false, errors.New("idItem not match")
+	}
+
+	affectedRows, err := res.RowsAffected()
+	if err != nil {
+		return false, errors.New("Error after delete")
+	}
+	if affectedRows <= 0 {
+		return false, errors.New("0 affected rows")
+
 	}
 	return true, nil
 }
