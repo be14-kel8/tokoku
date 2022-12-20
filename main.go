@@ -104,7 +104,19 @@ func main() {
 						}
 
 					case 4:
-
+						CustAuth.ShowCust()
+						var noHp string
+						fmt.Print("Insert Phone Number : ")
+						fmt.Scanln(&noHp)
+						res, err := CustAuth.DeleteCust(noHp)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Delete Customer success")
+						} else {
+							fmt.Println("Delete Customer  failed")
+						}
 					case 5:
 
 					case 9:
