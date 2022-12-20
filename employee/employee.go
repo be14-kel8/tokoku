@@ -15,7 +15,6 @@ type Employee struct {
 func (e *Employee) SetId(newEmployeeId int) {
 	//cara akses object nya menggunakan method.property
 	e.id = newEmployeeId
-
 }
 
 func (e *Employee) SetUsername(newUserName string) {
@@ -50,16 +49,14 @@ type EmployeeAuth struct {
 	DB *sql.DB
 }
 
-func (em *EmployeeAuth) Duplicate(userName string) bool {
-	res := em.DB.QueryRow("SELECT id_employee FROM employees where username = ?", userName)
-
+func (em *EmployeeAuth) Duplicate(username string) bool {
+	res := em.DB.QueryRow("SELECT id_employee FROM employees WHERE username = ?", username)
 	tmp := 0
 	err := res.Scan(&tmp)
 	if err != nil {
 		return false
 	}
 	return true
-
 }
 
 func (em *EmployeeAuth) RegisterEmp(newEmp Employee) (bool, error) {
@@ -69,9 +66,8 @@ func (em *EmployeeAuth) RegisterEmp(newEmp Employee) (bool, error) {
 	}
 	//duplicate
 	if em.Duplicate(newEmp.GetUsername()) {
-		return false, errors.New("username already exist")
+		return false, errors.New("\nUsername already exist")
 	}
-
 	//execute
 	res, err := registerQry.Exec(newEmp.GetUsername(), newEmp.GetName(), newEmp.GetPassword())
 	if err != nil {
@@ -87,4 +83,20 @@ func (em *EmployeeAuth) RegisterEmp(newEmp Employee) (bool, error) {
 		return false, errors.New("0 affected rows")
 	}
 	return true, nil
+}
+
+func (em *EmployeeAuth) Login(username, password string) (Employee, error) {
+	emp := Employee{}
+	id := 0
+	name := ""
+	err := em.DB.QueryRow(
+		"SELECT id_employee, name FROM employees WHERE username = ? AND password = ?", username, password).
+		Scan(&id, &name)
+	emp.SetId(id)
+	emp.SetName(name)
+
+	if err != nil {
+		return emp, errors.New("\nUser not found or wrong password")
+	}
+	return emp, nil
 }

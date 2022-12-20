@@ -1,12 +1,15 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
+	"os"
 	"tokoku/config"
 	"tokoku/employee"
 )
 
 func main() {
+	scanner := bufio.NewScanner(os.Stdin)
 	var cfg = config.ReadConfig()
 	var conn = config.ConnectSQL(*cfg)
 	var employeeAuth = employee.EmployeeAuth{DB: conn}
@@ -47,13 +50,15 @@ func main() {
 					case 1:
 						var newEmp employee.Employee
 						var tmpS string
-						fmt.Print("Inseret username :")
+						fmt.Print("\n---Employee Register\n")
+						fmt.Print("Insert username : ")
 						fmt.Scanln(&tmpS)
 						newEmp.SetUsername(tmpS)
-						fmt.Print("Insert name ")
-						fmt.Scanln(&tmpS)
+						fmt.Print("Insert name : ")
+						scanner.Scan()
+						tmpS = scanner.Text()
 						newEmp.SetName(tmpS)
-						fmt.Print("Insert password ")
+						fmt.Print("Insert password : ")
 						fmt.Scanln(&tmpS)
 						newEmp.SetPassword(tmpS)
 						res, err := employeeAuth.RegisterEmp(newEmp)
@@ -71,45 +76,59 @@ func main() {
 
 					case 4:
 
+					case 9:
+						break
 					default:
 						fmt.Println("\nSorry, option doesn't exist")
 					}
 				}
 			} else {
+				emp, err := employeeAuth.Login(username, password)
+				if err != nil {
+					fmt.Println(err.Error())
+				}
+
 				//Menu Utama Pegawai
-				menuEmp := 0
-				for menuEmp != 9 {
-					fmt.Println("--- Employee Menu\n")
-					fmt.Println("1. Insert item")
-					fmt.Println("2. Edit item")
-					fmt.Println("3. Update quantity")
-					fmt.Println("4. Add new customer")
-					fmt.Println("5. Add item to cart")
-					fmt.Println("6. Show cart")
-					fmt.Println("9. Log out")
-					fmt.Print("Enter an option : ")
-					fmt.Scanln(&menuEmp)
+				if emp.GetName() != "" {
+					menuEmp := 0
+					for menuEmp != 9 {
+						fmt.Print("\n--- Employee Menu\n")
+						fmt.Print("\nWelcome back, ", emp.GetName(), "\n")
+						fmt.Println("1. Insert item")
+						fmt.Println("2. Edit item")
+						fmt.Println("3. Update quantity")
+						fmt.Println("4. Add new customer")
+						fmt.Println("5. Add item to cart")
+						fmt.Println("6. Show cart")
+						fmt.Println("9. Log out")
+						fmt.Print("Enter an option : ")
+						fmt.Scanln(&menuEmp)
 
-					switch menuEmp {
-					case 1:
+						switch menuEmp {
+						case 1:
 
-					case 2:
+						case 2:
 
-					case 3:
+						case 3:
 
-					case 4:
+						case 4:
 
-					case 5:
+						case 5:
 
-					case 6:
+						case 6:
 
-					default:
-						fmt.Println("\nSorry, option doesn't exist")
+						case 9:
+							break
+						default:
+							fmt.Println("\nSorry, option doesn't exist")
+						}
 					}
 				}
 			}
 		case 2:
 
+		case 9:
+			break
 		default:
 			fmt.Println("\nSorry, option doesn't exist")
 		}
