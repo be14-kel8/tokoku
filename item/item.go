@@ -43,7 +43,7 @@ func (i *Item) GetIDEmployee() int {
 func (i *Item) GetItemName() string {
 	return i.itemName
 }
-func (i *Item) GetNewQuantity() int {
+func (i *Item) GetQuantity() int {
 	return i.quantity
 }
 
@@ -58,7 +58,7 @@ func (ia *ItemAuth) InsertItem(newItem Item) (bool, error) {
 		return false, errors.New("Column items not match")
 	}
 
-	res, err := InsertQry.Exec(newItem.idEmployee, newItem.itemName, newItem.quantity)
+	res, err := InsertQry.Exec(newItem.GetIDEmployee(), newItem.GetItemName(), newItem.GetQuantity())
 	if err != nil {
 
 		return false, errors.New("Error insert query")
@@ -137,19 +137,19 @@ func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
 }
 
 func (ia *ItemAuth) UpdateQty(idItem, qty int) (bool, error) {
-	UpdateQry, err := ia.DB.Prepare("UPDATE  items  SET  quantity = ?   WHERE id_item = ?")
+	UpdateQry, err := ia.DB.Prepare("UPDATE items SET quantity = ? WHERE id_item = ?")
 	if err != nil {
-		return false, errors.New("Error update query")
+		return false, errors.New("error update query")
 	}
 
-	res, err := UpdateQry.Exec(idItem, qty)
+	res, err := UpdateQry.Exec(qty, idItem)
 	if err != nil {
 		return false, errors.New("id_item not exist")
 	}
 
 	affectedRows, err := res.RowsAffected()
 	if err != nil {
-		return false, errors.New("Error after update query")
+		return false, errors.New("error after update query")
 	}
 
 	if affectedRows <= 0 {
