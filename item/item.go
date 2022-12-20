@@ -58,17 +58,17 @@ func (ia *ItemAuth) InsertItem(newItem Item) (bool, error) {
 		return false, errors.New("Column items not match")
 	}
 
-	res, err := InsertQry.Exec(newItem.idEmployee, newItem.itemName, newItem.quantity)
+	res, err := InsertQry.Exec(newItem.GetIDEmployee(), newItem.GetItemName(), newItem.GetNewQuantity())
 	if err != nil {
 
-		return false, errors.New("Error insert query")
+		return false, errors.New("error insert query")
 	}
 
 	affectedRows, err := res.RowsAffected()
 
 	if err != nil {
 
-		return false, errors.New("Error After insert query")
+		return false, errors.New("error After insert query")
 	}
 
 	if affectedRows <= 0 {
@@ -127,7 +127,7 @@ func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
 
 	affectedRows, err := res.RowsAffected()
 	if err != nil {
-		return false, errors.New("Error after delete")
+		return false, errors.New("error after delete")
 	}
 	if affectedRows <= 0 {
 		return false, errors.New("0 affected rows")
@@ -139,10 +139,9 @@ func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
 func (ia *ItemAuth) UpdateQty(idItem, qty int) (bool, error) {
 	UpdateQry, err := ia.DB.Prepare("UPDATE  items  SET  quantity = ?   WHERE id_item = ?")
 	if err != nil {
-		return false, errors.New("Error update query")
+		return false, errors.New("error update query")
 	}
-
-	res, err := UpdateQry.Exec(idItem, qty)
+	res, err := UpdateQry.Exec(qty, idItem)
 	if err != nil {
 		return false, errors.New("id_item not exist")
 	}
@@ -158,4 +157,27 @@ func (ia *ItemAuth) UpdateQty(idItem, qty int) (bool, error) {
 	}
 
 	return true, nil
+}
+
+func (ia *ItemAuth) EditItems(idItem int, newName string) (bool, error) {
+	EditQry, err := ia.DB.Prepare("UPDATE  items  SET  item_name = ?   WHERE id_item = ?")
+	if err != nil {
+		return false, errors.New("error update query")
+	}
+
+	res, err := EditQry.Exec(newName, idItem)
+	if err != nil {
+		return false, errors.New("id_item not exist")
+	}
+
+	affectedRows, err := res.RowsAffected()
+	if err != nil {
+		return false, errors.New("error after update")
+	}
+
+	if affectedRows <= 0 {
+		return false, errors.New("0 affected rows")
+	}
+	return true, nil
+
 }

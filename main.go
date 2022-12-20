@@ -138,11 +138,12 @@ func main() {
 						fmt.Print("\n--- Employee Menu\n")
 						fmt.Print("\nWelcome back, ", emp.GetName(), "\n")
 						fmt.Println("1. Insert item")
-						fmt.Println("2. Edit item")
-						fmt.Println("3. Update quantity")
-						fmt.Println("4. Add new customer")
-						fmt.Println("5. Add item to cart")
-						fmt.Println("6. Show cart")
+						fmt.Println("2. Show All items")
+						fmt.Println("3. Edit item")
+						fmt.Println("4. Update quantity")
+						fmt.Println("5. Add new customer")
+						fmt.Println("6. Add item to cart")
+						fmt.Println("7. Show cart")
 						fmt.Println("9. Log out")
 						fmt.Print("Enter an option : ")
 						fmt.Scanln(&menuEmp)
@@ -170,8 +171,28 @@ func main() {
 								fmt.Println("Insert item failed")
 							}
 						case 2:
-
+							fmt.Println("List Items")
+							itemAuth.ShowItems()
 						case 3:
+							itemAuth.ShowItems()
+							var idItem int
+							var newName string
+							fmt.Print("Insert Id item : ")
+							fmt.Scanln(&idItem)
+							fmt.Print("Insert New Name  : ")
+							fmt.Scanln(&newName)
+							res, err := itemAuth.EditItems(idItem, newName)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("Update Name Success")
+
+							} else {
+								fmt.Println("Update Name failed")
+							}
+
+						case 4:
 							itemAuth.ShowItems()
 							var idItem, qty int
 							fmt.Print("Insert Id item : ")
@@ -188,7 +209,7 @@ func main() {
 							} else {
 								fmt.Println("Update Quantity failed")
 							}
-						case 4:
+						case 5:
 							var newCust customer.Customer
 							tmps := ""
 							fmt.Print("Insert Phone number : ")
@@ -209,9 +230,9 @@ func main() {
 							} else {
 								fmt.Println("Insert New Customer failed")
 							}
-						case 5:
-
 						case 6:
+
+						case 7:
 
 						case 9:
 							break
