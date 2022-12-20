@@ -3,6 +3,8 @@ package employee
 import (
 	"database/sql"
 	"errors"
+	"fmt"
+	"log"
 )
 
 type Employee struct {
@@ -101,4 +103,36 @@ func (em *EmployeeAuth) Login(username, password string) (Employee, error) {
 	return emp, nil
 }
 
+func (em *EmployeeAuth) ShowEmps() {
+	rows, err := em.DB.Query("SELECT id_employee, username, name FROM employees")
+	if err != nil {
+		errors.New("Error select query")
+	}
+	defer rows.Close()
 
+	tmpId := 0
+	tmpUname, tmpName := "", ""
+	var emp Employee
+	var emps []Employee
+	for rows.Next() {
+		err := rows.Scan(&tmpId, &tmpUname, &tmpName)
+		if err != nil {
+			errors.New("Error scan ")
+		}
+		emp.SetId(tmpId)
+		emp.SetUsername(tmpUname)
+		emp.SetName(tmpName)
+		emps = append(emps, emp)
+	}
+
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	for _, v := range emps {
+		fmt.Println("")
+		fmt.Println("ID Employee\t\t: ", v.id)
+		fmt.Println("Employee Username\t: ", v.username)
+		fmt.Println("Employee Name\t\t: ", v.name)
+	}
+}

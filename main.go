@@ -40,9 +40,10 @@ func main() {
 				for menuAdm != 9 {
 					fmt.Print("\n--- Administrator Menu\n")
 					fmt.Println("1. Add new employee")
-					fmt.Println("2. Delete item")
-					fmt.Println("3. Delete customer")
-					fmt.Println("4. Delete transaction")
+					fmt.Println("2. Delete employee")
+					fmt.Println("3. Delete item")
+					fmt.Println("4. Delete customer")
+					fmt.Println("5. Delete transaction")
 					fmt.Println("9. Log out")
 					fmt.Print("Enter an option : ")
 					fmt.Scanln(&menuAdm)
@@ -72,10 +73,12 @@ func main() {
 							fmt.Println("Register Failed")
 						}
 					case 2:
-
+						employeeAuth.ShowEmps()
 					case 3:
 
 					case 4:
+
+					case 5:
 
 					case 9:
 						break
