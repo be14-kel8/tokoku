@@ -1,6 +1,9 @@
 package item
 
-import "database/sql"
+import (
+	"database/sql"
+	"errors"
+)
 
 type Item struct {
 	idItem     int
@@ -42,6 +45,33 @@ func (i *Item) GetNewQuantity() int {
 	return i.quantity
 }
 
-type ConnectSQL struct {
+type ItemAuth struct {
 	DB *sql.DB
+}
+
+func (ia *ItemAuth) InsertItem(newItem Item) (bool, error) {
+	InsertQry, err := ia.DB.Prepare("INSERT INTO items (id_employee,item_name,quantity) values (?,?,?)")
+	if err != nil {
+
+		return false, errors.New("Column items not match")
+	}
+
+	res, err := InsertQry.Exec(newItem.idEmployee, newItem.itemName, newItem.quantity)
+	if err != nil {
+
+		return false, errors.New("Error insert query")
+	}
+
+	affectedRows, err := res.RowsAffected()
+
+	if err != nil {
+
+		return false, errors.New("Error After insert query")
+	}
+
+	if affectedRows <= 0 {
+
+		return false, errors.New("0 affected rows")
+	}
+	return true, nil
 }
