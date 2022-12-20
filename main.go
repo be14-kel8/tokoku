@@ -172,7 +172,22 @@ func main() {
 						case 2:
 
 						case 3:
+							itemAuth.ShowItems()
+							var idItem, qty int
+							fmt.Print("Insert Id item : ")
+							fmt.Scanln(&idItem)
+							fmt.Print("Insert New Quantity : ")
+							fmt.Scanln(&qty)
+							res, err := itemAuth.UpdateQty(idItem, qty)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("Update Quantity Success")
 
+							} else {
+								fmt.Println("Update Quantity failed")
+							}
 						case 4:
 							var newCust customer.Customer
 							tmps := ""
