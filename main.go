@@ -87,6 +87,19 @@ func main() {
 							fmt.Println("Delete Employee failed")
 						}
 					case 3:
+						itemAuth.ShowItems()
+						var idItem int
+						fmt.Print("Insert id item : ")
+						fmt.Scanln(&idItem)
+						res, err := itemAuth.DeleteItem(idItem)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Delete item success")
+						} else {
+							fmt.Println("Delete item failed")
+						}
 
 					case 4:
 
