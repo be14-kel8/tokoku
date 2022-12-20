@@ -100,3 +100,5 @@ func (em *EmployeeAuth) Login(username, password string) (Employee, error) {
 	}
 	return emp, nil
 }
+
+

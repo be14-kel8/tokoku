@@ -6,6 +6,7 @@ import (
 	"os"
 	"tokoku/config"
 	"tokoku/employee"
+	"tokoku/item"
 )
 
 func main() {
@@ -13,7 +14,7 @@ func main() {
 	var cfg = config.ReadConfig()
 	var conn = config.ConnectSQL(*cfg)
 	var employeeAuth = employee.EmployeeAuth{DB: conn}
-
+	var itemAuth = item.ItemAuth{DB: conn}
 	//Menu Login
 	loginMenu := 0
 	for loginMenu != 9 {
@@ -106,7 +107,26 @@ func main() {
 
 						switch menuEmp {
 						case 1:
+							var newItem item.Item
+							fmt.Print("Insert item name : ")
+							scanner.Scan()
+							tmps := scanner.Text()
+							newItem.SetItemName(tmps)
+							fmt.Print("Insert quantity : ")
+							tmpi := 0
+							fmt.Scanln(&tmpi)
+							newItem.SetQuantity(tmpi)
+							newItem.SetIdEmployee(emp.GetId())
+							res, err := itemAuth.InsertItem(newItem)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("Insert item Success")
 
+							} else {
+								fmt.Println("Insert item failed")
+							}
 						case 2:
 
 						case 3:
