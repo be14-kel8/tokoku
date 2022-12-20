@@ -74,6 +74,18 @@ func main() {
 						}
 					case 2:
 						employeeAuth.ShowEmps()
+						var username string
+						fmt.Print("Insert username : ")
+						fmt.Scanln(&username)
+						res, err := employeeAuth.DeleteEmp(username)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Delete Employee success")
+						} else {
+							fmt.Println("Delete Employee failed")
+						}
 					case 3:
 
 					case 4:

@@ -124,10 +124,11 @@ func (em *EmployeeAuth) ShowEmps() {
 		emp.SetName(tmpName)
 		emps = append(emps, emp)
 	}
-
+	// tanya mas jerry 
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}
+
 
 	for _, v := range emps {
 		fmt.Println("")
@@ -135,4 +136,26 @@ func (em *EmployeeAuth) ShowEmps() {
 		fmt.Println("Employee Username\t: ", v.username)
 		fmt.Println("Employee Name\t\t: ", v.name)
 	}
+}
+
+func (em *EmployeeAuth) DeleteEmp(username string) (bool, error) {
+	deleteQry, err := em.DB.Prepare("DELETE FROM employees WHERE username = ?")
+	if err != nil {
+		return false, errors.New("Error delete query")
+	}
+
+	res, err := deleteQry.Exec(username)
+	if err != nil {
+		return false, errors.New("username not match")
+	}
+
+	affectedRows, err := res.RowsAffected()
+	if err != nil {
+		return false, errors.New("Error after delete")
+	}
+	if affectedRows <= 0 {
+		return false, errors.New("0 affected rows")
+
+	}
+	return true, nil
 }
