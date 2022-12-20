@@ -11,18 +11,18 @@ type Item struct {
 
 //method set (untuk mempersiapkan properti yang bisa diakses)
 
-func (i *Item) SetIdItem(newIdItem int){
+func (i *Item) SetIdItem(newIdItem int) {
 	i.idItem = newIdItem
 }
-func (i *Item) SetIdEmployee(newIdEmployee int){
+func (i *Item) SetIdEmployee(newIdEmployee int) {
 	i.idEmployee = newIdEmployee
 }
 
-func (i *Item) SetItemName(newItemName string){
+func (i *Item) SetItemName(newItemName string) {
 	i.itemName = newItemName
 }
 
-func (i *Item) SetQuantity(newQuantity int){
+func (i *Item) SetQuantity(newQuantity int) {
 	i.quantity = newQuantity
 }
 
@@ -42,10 +42,6 @@ func (i *Item) GetNewQuantity() int {
 	return i.quantity
 }
 
-
-
-
-type ConnectSQL struct{
+type ConnectSQL struct {
 	DB *sql.DB
 }
-
