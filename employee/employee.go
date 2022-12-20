@@ -103,37 +103,59 @@ func (em *EmployeeAuth) Login(username, password string) (Employee, error) {
 	return emp, nil
 }
 
-func (em *EmployeeAuth) ShowEmp() {
-	rows, err := em.DB.Query("SELECT id_employee, username, name from employees")
-	if rows != nil{
-		fmt.Println(err.Error())
+func (em *EmployeeAuth) ShowEmps() {
+	rows, err := em.DB.Query("SELECT id_employee, username, name FROM employees")
+	if err != nil {
+		errors.New("Error select query")
 	}
 	defer rows.Close()
 
-	var tmpUname,tmpName string
-	var tmpId int
+	tmpId := 0
+	tmpUname, tmpName := "", ""
 	var emp Employee
-	var emps =[]Employee{}
-	for rows.Next(){
-		err = rows.Scan(&tmpId, &tmpUname, &tmpName)
-		if err != nil{
-			fmt.Println(err.Error())
+	var emps []Employee
+	for rows.Next() {
+		err := rows.Scan(&tmpId, &tmpUname, &tmpName)
+		if err != nil {
+			errors.New("Error scan ")
 		}
 		emp.SetId(tmpId)
 		emp.SetUsername(tmpUname)
 		emp.SetName(tmpName)
 		emps = append(emps, emp)
 	}
-	if err := rows.Err(); err !=  nil{
+	// tanya mas jerry 
+	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}
 
 
-
+	for _, v := range emps {
+		fmt.Println("")
+		fmt.Println("ID Employee\t\t: ", v.id)
+		fmt.Println("Employee Username\t: ", v.username)
+		fmt.Println("Employee Name\t\t: ", v.name)
+	}
 }
 
 func (em *EmployeeAuth) DeleteEmp(username string) (bool, error) {
+	deleteQry, err := em.DB.Prepare("DELETE FROM employees WHERE username = ?")
+	if err != nil {
+		return false, errors.New("Error delete query")
+	}
 
-	deleteQry, err := em.DB.Prepare("DELETE from employees where username = ?")
+	res, err := deleteQry.Exec(username)
+	if err != nil {
+		return false, errors.New("username not match")
+	}
 
+	affectedRows, err := res.RowsAffected()
+	if err != nil {
+		return false, errors.New("Error after delete")
+	}
+	if affectedRows <= 0 {
+		return false, errors.New("0 affected rows")
+
+	}
+	return true, nil
 }
