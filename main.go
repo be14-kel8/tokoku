@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"tokoku/config"
+	"tokoku/customer"
 	"tokoku/employee"
 	"tokoku/item"
 )
@@ -15,6 +16,7 @@ func main() {
 	var conn = config.ConnectSQL(*cfg)
 	var employeeAuth = employee.EmployeeAuth{DB: conn}
 	var itemAuth = item.ItemAuth{DB: conn}
+	var CustAuth = customer.CustAuth{DB: conn}
 	//Menu Login
 	loginMenu := 0
 	for loginMenu != 9 {
@@ -102,7 +104,19 @@ func main() {
 						}
 
 					case 4:
-
+						CustAuth.ShowCust()
+						var noHp string
+						fmt.Print("Insert Phone Number : ")
+						fmt.Scanln(&noHp)
+						res, err := CustAuth.DeleteCust(noHp)
+						if err != nil {
+							fmt.Println(err.Error())
+						}
+						if res {
+							fmt.Println("Delete Customer success")
+						} else {
+							fmt.Println("Delete Customer  failed")
+						}
 					case 5:
 
 					case 9:
@@ -158,9 +172,43 @@ func main() {
 						case 2:
 
 						case 3:
+							itemAuth.ShowItems()
+							var idItem, qty int
+							fmt.Print("Insert Id item : ")
+							fmt.Scanln(&idItem)
+							fmt.Print("Insert New Quantity : ")
+							fmt.Scanln(&qty)
+							res, err := itemAuth.UpdateQty(idItem, qty)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("Update Quantity Success")
 
+							} else {
+								fmt.Println("Update Quantity failed")
+							}
 						case 4:
+							var newCust customer.Customer
+							tmps := ""
+							fmt.Print("Insert Phone number : ")
+							fmt.Scanln(&tmps)
+							newCust.SetNohp(tmps)
+							fmt.Print("Insert Customer Name : ")
+							scanner.Scan()
+							tmps = scanner.Text()
+							newCust.SetName(tmps)
+							newCust.SetIdEmployee(emp.GetId())
+							res, err := CustAuth.InsertCust(newCust)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("Insert New Customer Success")
 
+							} else {
+								fmt.Println("Insert New Customer failed")
+							}
 						case 5:
 
 						case 6:
