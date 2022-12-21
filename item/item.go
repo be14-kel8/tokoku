@@ -43,7 +43,7 @@ func (i *Item) GetIDEmployee() int {
 func (i *Item) GetItemName() string {
 	return i.itemName
 }
-func (i *Item) GetNewQuantity() int {
+func (i *Item) GetQuantity() int {
 	return i.quantity
 }
 
@@ -55,10 +55,10 @@ func (ia *ItemAuth) InsertItem(newItem Item) (bool, error) {
 	InsertQry, err := ia.DB.Prepare("INSERT INTO items (id_employee,item_name,quantity) values (?,?,?)")
 	if err != nil {
 
-		return false, errors.New("Column items not match")
+		return false, errors.New("column items not match")
 	}
 
-	res, err := InsertQry.Exec(newItem.GetIDEmployee(), newItem.GetItemName(), newItem.GetNewQuantity())
+	res, err := InsertQry.Exec(newItem.GetIDEmployee(), newItem.GetItemName(), newItem.GetQuantity())
 	if err != nil {
 
 		return false, errors.New("error insert query")
@@ -81,7 +81,7 @@ func (ia *ItemAuth) InsertItem(newItem Item) (bool, error) {
 func (ia *ItemAuth) ShowItems() {
 	rows, err := ia.DB.Query("SELECT * FROM items")
 	if err != nil {
-		errors.New("Error select query")
+		errors.New("error select query")
 	}
 	defer rows.Close()
 
@@ -117,7 +117,7 @@ func (ia *ItemAuth) ShowItems() {
 func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
 	deleteQry, err := ia.DB.Prepare("DELETE FROM items WHERE id_item = ?")
 	if err != nil {
-		return false, errors.New("Error delete query")
+		return false, errors.New("error delete query")
 	}
 
 	res, err := deleteQry.Exec(idItem)
@@ -137,7 +137,7 @@ func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
 }
 
 func (ia *ItemAuth) UpdateQty(idItem, qty int) (bool, error) {
-	UpdateQry, err := ia.DB.Prepare("UPDATE  items  SET  quantity = ?   WHERE id_item = ?")
+	UpdateQry, err := ia.DB.Prepare("UPDATE items SET quantity = ? WHERE id_item = ?")
 	if err != nil {
 		return false, errors.New("error update query")
 	}
@@ -148,7 +148,7 @@ func (ia *ItemAuth) UpdateQty(idItem, qty int) (bool, error) {
 
 	affectedRows, err := res.RowsAffected()
 	if err != nil {
-		return false, errors.New("Error after update query")
+		return false, errors.New("error after update query")
 	}
 
 	if affectedRows <= 0 {
@@ -180,4 +180,35 @@ func (ia *ItemAuth) EditItems(idItem int, newName string) (bool, error) {
 	}
 	return true, nil
 
+}
+
+func (ia *ItemAuth) ItemList() []Item {
+	rows, err := ia.DB.Query("SELECT * FROM items")
+	if err != nil {
+		errors.New("error select query")
+	}
+	defer rows.Close()
+
+	m := make(map[int]Item)
+	tmpId, tmpIdE, tmpQ := 0, 0, 0
+	tmpName := ""
+	var item Item
+	var items []Item
+	for rows.Next() {
+		err := rows.Scan(&tmpId, &tmpIdE, &tmpName, &tmpQ)
+		if err != nil {
+			errors.New("Error scan ")
+		}
+		item.SetIdItem(tmpId)
+		item.SetIdEmployee(tmpIdE)
+		item.SetItemName(tmpName)
+		item.SetQuantity(tmpQ)
+		items = append(items, item)
+	}
+	// tanya mas jerry
+	if err := rows.Err(); err != nil {
+		log.Fatal(err)
+	}
+
+	return items
 }
