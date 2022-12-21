@@ -8,6 +8,7 @@ import (
 	"tokoku/customer"
 	"tokoku/employee"
 	"tokoku/item"
+	"tokoku/transaction"
 )
 
 func main() {
@@ -17,6 +18,7 @@ func main() {
 	var employeeAuth = employee.EmployeeAuth{DB: conn}
 	var itemAuth = item.ItemAuth{DB: conn}
 	var custAuth = customer.CustAuth{DB: conn}
+	var transAuth = transaction.TransAuth{DB: conn}
 	//Menu Login
 	loginMenu := 0
 	for loginMenu != 9 {
@@ -40,7 +42,7 @@ func main() {
 				//Menu Utama Admin
 				menuAdm := 0
 				for menuAdm != 9 {
-					fmt.Print("\n--- Administrator Menu\n")
+					fmt.Print("\n--- Administrator Menu\n\n")
 					fmt.Println("1. Add new employee")
 					fmt.Println("2. Delete employee")
 					fmt.Println("3. Delete item")
@@ -120,7 +122,7 @@ func main() {
 					case 5:
 
 					case 9:
-						break
+						continue
 					default:
 						fmt.Println("\nSorry, option doesn't exist")
 					}
@@ -236,13 +238,13 @@ func main() {
 							items := itemAuth.ItemList()
 
 							for transMenu != 9 {
-								fmt.Println("\n---Transaction Menu")
+								fmt.Println("\n--- Transaction Menu")
 								fmt.Println("1. Show all items")
 								fmt.Println("2. Add item to cart")
 								fmt.Println("3. Show cart")
 								fmt.Println("4. Checkout")
 								fmt.Println("9. Back")
-								fmt.Print("Insert an option : ")
+								fmt.Print("Enter an option : ")
 								fmt.Scanln(&transMenu)
 								switch transMenu {
 								case 1:
@@ -284,18 +286,50 @@ func main() {
 
 									items[idItem].SetQuantity(items[idItem].GetQuantity() - qty)
 								case 3:
-									fmt.Println("\n---Cart")
+									fmt.Println("\n--- Cart")
 									fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
 									for _, v := range cart {
 										fmt.Print(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity(), "\n")
 									}
 								case 4:
+									fmt.Println("\n--- Cart")
+									fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
+									for _, v := range cart {
+										fmt.Print(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity(), "\n")
+									}
+									tmp, noHp := "", ""
+									fmt.Print("Are you sure want to finish your cart? (y/n) : ")
+									fmt.Scanln(&tmp)
+
+									if tmp == "y" {
+										fmt.Print("Insert customer phone number : ")
+										fmt.Scanln(&noHp)
+										res, err := transAuth.Checkout(emp.GetId(), noHp, cart)
+										if err != nil {
+											fmt.Println(err.Error())
+										}
+										if res {
+											fmt.Println("\nCheckout Success")
+
+										} else {
+											fmt.Println("\nCheckout failed")
+										}
+										for _, v := range cart {
+											itemAuth.UpdateQty(v.GetIdItem(), items[v.GetIdItem()].GetQuantity())
+										}
+									} else if tmp == "n" {
+										continue
+									} else {
+										fmt.Println("Wrong Input")
+									}
 								case 9:
-									break
+									continue
+								default:
+									fmt.Println("\nSorry, option doesn't exist")
 								}
 							}
 						case 9:
-							break
+							continue
 						default:
 							fmt.Println("\nSorry, option doesn't exist")
 						}
@@ -305,7 +339,7 @@ func main() {
 		case 2:
 
 		case 9:
-			break
+			continue
 		default:
 			fmt.Println("\nSorry, option doesn't exist")
 		}
