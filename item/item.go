@@ -215,15 +215,9 @@ func (ia *ItemAuth) ItemList() map[int]*Item {
 		if err != nil {
 			errors.New("error scan ")
 		}
-		// item.SetIdItem(tmpId)
-		// item.SetIdEmployee(tmpIdE)
-		// item.SetItemName(tmpName)
-		// item.SetQuantity(tmpQ)
+		// map, 1 id = valuenya properti struct
 		items[tmpId] = &Item{tmpId, tmpIdE, tmpName, tmpQ}
-		// items[tmpId].idItem = tmpId
-		// items[tmpId].idEmployee = tmpIdE
-		// items[tmpId].itemName = tmpName
-		// items[tmpId].quantity = tmpQ
+		
 	}
 	// tanya mas jerry
 	if err := rows.Err(); err != nil {

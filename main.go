@@ -249,6 +249,7 @@ func main() {
 									fmt.Print("\n--- All items\n")
 									itemAuth.ShowItems()
 								case 2:
+									//show  item avaiable
 									fmt.Print("\n--- Add item to cart\n")
 									var itemCart item.Item
 									idItem, qty := 0, 0
@@ -259,6 +260,8 @@ func main() {
 											fmt.Print("Quantity available : ", v.GetQuantity(), "\n\n")
 										}
 									}
+
+									//proses masukin ke keranjang
 									fmt.Print("Insert ID item : ")
 									fmt.Scanln(&idItem)
 									fmt.Print("Insert quantity : ")
@@ -267,28 +270,48 @@ func main() {
 										fmt.Println("\nThe quantity is higher than the maximum available")
 										continue
 									}
+									// found := false
+									// for _, i := range items {
+									// 	if i == items[idItem].GetIdItem() {
+									// 		found = true
+									// 		continue
+									// 	}
+									// 	if found {
+									// 		fmt.Println("Id item not exist")
+									// 		continue
+									// 	}
+									// }
 
+									// ngecek apakah inputan ada di cart
+									//kondisi true
 									if thisItem, ok := cart[idItem]; ok {
 										thisItem.SetIdItem(idItem)
 										thisItem.SetIdEmployee(items[idItem].GetIDEmployee())
 										thisItem.SetItemName(items[idItem].GetItemName())
 										thisItem.SetQuantity(thisItem.GetQuantity() + qty)
 										cart[idItem] = thisItem
-									} else {
+									} else { // kondisi false barang belum ada di cart
 										itemCart.SetIdItem(idItem)
 										itemCart.SetIdEmployee(items[idItem].GetIDEmployee())
 										itemCart.SetItemName(items[idItem].GetItemName())
 										itemCart.SetQuantity(qty)
 										cart[idItem] = &itemCart
 									}
-
+									// update di show item ketika mau masukin keranjang
 									items[idItem].SetQuantity(items[idItem].GetQuantity() - qty)
+
 								case 3:
+									// show isi cart
 									fmt.Println("\n---Cart")
-									fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
-									for _, v := range cart {
-										fmt.Print(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity(), "\n")
+									if len(cart) == 0 {
+										fmt.Println("Your cart empty, please add item to cart")
+									} else {
+										for _, v := range cart {
+											fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
+											fmt.Print(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity(), "\n")
+										}
 									}
+
 								case 4:
 								case 9:
 									break
