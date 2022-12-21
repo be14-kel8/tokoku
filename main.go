@@ -232,7 +232,7 @@ func main() {
 						case 6:
 							//Menu Transaksi
 							transMenu := 0
-							cart := []item.Item{}
+							cart := map[int]*item.Item{}
 							for transMenu != 9 {
 								fmt.Println("\n---Transaction Menu")
 								fmt.Println("1. Show all items")
@@ -270,9 +270,13 @@ func main() {
 									itemCart.SetIdEmployee(items[idItem].GetIDEmployee())
 									itemCart.SetItemName(items[idItem].GetItemName())
 									itemCart.SetQuantity(qty)
-									cart = append(cart, itemCart)
+									cart[idItem] = &itemCart
 								case 3:
-									fmt.Println(cart)
+									fmt.Println("\n---Cart")
+									fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
+									for _, v := range cart {
+										fmt.Print(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity(), "\n")
+									}
 								case 4:
 								case 9:
 									break
