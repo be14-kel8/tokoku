@@ -217,7 +217,7 @@ func (ia *ItemAuth) ItemList() map[int]*Item {
 		}
 		// map, 1 id = valuenya properti struct
 		items[tmpId] = &Item{tmpId, tmpIdE, tmpName, tmpQ}
-		
+
 	}
 	// tanya mas jerry
 	if err := rows.Err(); err != nil {
