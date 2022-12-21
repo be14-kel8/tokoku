@@ -182,7 +182,7 @@ func (ia *ItemAuth) EditItems(idItem int, newName string) (bool, error) {
 
 }
 
-func (ia *ItemAuth) ItemList() []Item {
+func (ia *ItemAuth) ItemList() map[int]*Item {
 	rows, err := ia.DB.Query("SELECT * FROM items")
 	if err != nil {
 		errors.New("error select query")
@@ -192,18 +192,23 @@ func (ia *ItemAuth) ItemList() []Item {
 	// m := make(map[int]Item)
 	tmpId, tmpIdE, tmpQ := 0, 0, 0
 	tmpName := ""
-	var item Item
-	var items []Item
+	// var item Item
+	// var items []Item
+	items := make(map[int]*Item)
 	for rows.Next() {
 		err := rows.Scan(&tmpId, &tmpIdE, &tmpName, &tmpQ)
 		if err != nil {
 			errors.New("error scan ")
 		}
-		item.SetIdItem(tmpId)
-		item.SetIdEmployee(tmpIdE)
-		item.SetItemName(tmpName)
-		item.SetQuantity(tmpQ)
-		items = append(items, item)
+		// item.SetIdItem(tmpId)
+		// item.SetIdEmployee(tmpIdE)
+		// item.SetItemName(tmpName)
+		// item.SetQuantity(tmpQ)
+		items[tmpId] = &Item{tmpId, tmpIdE, tmpName, tmpQ}
+		// items[tmpId].idItem = tmpId
+		// items[tmpId].idEmployee = tmpIdE
+		// items[tmpId].itemName = tmpName
+		// items[tmpId].quantity = tmpQ
 	}
 	// tanya mas jerry
 	if err := rows.Err(); err != nil {
