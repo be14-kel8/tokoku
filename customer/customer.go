@@ -49,28 +49,27 @@ func (ca *CustAuth) DuplicateCust(noHP string) bool {
 		return false
 	}
 	return true
-
 }
 
 func (ca *CustAuth) InsertCust(newCustomer Customer) (bool, error) {
 	InsertQry, err := ca.DB.Prepare("INSERT INTO customers values (?,?,?)")
 	if err != nil {
-		return false, errors.New("Insert query customers error")
+		return false, errors.New("insert query customers error")
 	}
 	//Duplicate
 	if ca.DuplicateCust(newCustomer.GetNohp()) {
-		return false, errors.New("Phone Number already exist")
+		return false, errors.New("phone number already exist")
 
 	}
 
 	res, err := InsertQry.Exec(newCustomer.GetNohp(), newCustomer.GetIdEmployee(), newCustomer.GetName())
 	if err != nil {
-		return false, errors.New("Insert query not match")
+		return false, errors.New("insert query not match")
 	}
 
 	affectedRows, err := res.RowsAffected()
 	if err != nil {
-		return false, errors.New("Error after insert")
+		return false, errors.New("error after insert")
 	}
 
 	if affectedRows <= 0 {
@@ -93,7 +92,7 @@ func (ca *CustAuth) ShowCust() {
 	for rows.Next() {
 		err := rows.Scan(&tmpNohp, &tmpId, &tmpName)
 		if err != nil {
-			errors.New("Error scan ")
+			errors.New("error scan ")
 		}
 		cust.SetIdEmployee(tmpId)
 		cust.SetNohp(tmpNohp)
@@ -116,17 +115,17 @@ func (ca *CustAuth) ShowCust() {
 func (ca *CustAuth) DeleteCust(noHp string) (bool, error) {
 	deleteQry, err := ca.DB.Prepare("DELETE FROM customers WHERE no_hp = ?")
 	if err != nil {
-		return false, errors.New("Error delete query")
+		return false, errors.New("error delete query")
 	}
 
 	res, err := deleteQry.Exec(noHp)
 	if err != nil {
-		return false, errors.New("Phone Number not exist")
+		return false, errors.New("phone number not exist")
 	}
 
 	affectedRows, err := res.RowsAffected()
 	if err != nil {
-		return false, errors.New("Error after delete")
+		return false, errors.New("error after delete")
 	}
 	if affectedRows <= 0 {
 		return false, errors.New("0 affected rows")

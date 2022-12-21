@@ -115,7 +115,7 @@ func (ia *ItemAuth) ShowItems() {
 		item.SetQuantity(tmpQ)
 		items = append(items, item)
 	}
-	// tanya mas jerry
+
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}
@@ -204,11 +204,9 @@ func (ia *ItemAuth) ItemList() map[int]*Item {
 	}
 	defer rows.Close()
 
-	// m := make(map[int]Item)
 	tmpId, tmpIdE, tmpQ := 0, 0, 0
 	tmpName := ""
-	// var item Item
-	// var items []Item
+
 	items := make(map[int]*Item)
 	for rows.Next() {
 		err := rows.Scan(&tmpId, &tmpIdE, &tmpName, &tmpQ)
@@ -219,7 +217,7 @@ func (ia *ItemAuth) ItemList() map[int]*Item {
 		items[tmpId] = &Item{tmpId, tmpIdE, tmpName, tmpQ}
 
 	}
-	// tanya mas jerry
+
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}
