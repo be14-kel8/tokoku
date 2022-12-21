@@ -2,6 +2,7 @@ package transaction
 
 import (
 	"database/sql"
+	// "tokoku/item"
 )
 
 type Transaction struct {
@@ -57,3 +58,5 @@ func (t *Transaction) GetCreateDate() string {
 type TransAuth struct {
 	DB *sql.DB
 }
+
+

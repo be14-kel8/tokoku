@@ -243,7 +243,10 @@ func main() {
 								fmt.Scanln(&transMenu)
 								switch transMenu {
 								case 1:
+									itemAuth.ShowItems()
 								case 2:
+									itemAuth.ItemList()
+									fmt.Println()
 								case 3:
 								case 4:
 								case 9:

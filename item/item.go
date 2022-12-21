@@ -189,7 +189,7 @@ func (ia *ItemAuth) ItemList() []Item {
 	}
 	defer rows.Close()
 
-	m := make(map[int]Item)
+	// m := make(map[int]Item)
 	tmpId, tmpIdE, tmpQ := 0, 0, 0
 	tmpName := ""
 	var item Item
@@ -197,7 +197,7 @@ func (ia *ItemAuth) ItemList() []Item {
 	for rows.Next() {
 		err := rows.Scan(&tmpId, &tmpIdE, &tmpName, &tmpQ)
 		if err != nil {
-			errors.New("Error scan ")
+			errors.New("error scan ")
 		}
 		item.SetIdItem(tmpId)
 		item.SetIdEmployee(tmpIdE)
