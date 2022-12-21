@@ -233,6 +233,8 @@ func main() {
 							//Menu Transaksi
 							transMenu := 0
 							cart := map[int]*item.Item{}
+							items := itemAuth.ItemList()
+
 							for transMenu != 9 {
 								fmt.Println("\n---Transaction Menu")
 								fmt.Println("1. Show all items")
@@ -249,7 +251,6 @@ func main() {
 								case 2:
 									fmt.Print("\n--- Add item to cart\n")
 									var itemCart item.Item
-									items := itemAuth.ItemList()
 									idItem, qty := 0, 0
 									for _, v := range items {
 										if v.GetQuantity() > 0 {
@@ -266,11 +267,22 @@ func main() {
 										fmt.Println("\nThe quantity is higher than the maximum available")
 										continue
 									}
-									itemCart.SetIdItem(idItem)
-									itemCart.SetIdEmployee(items[idItem].GetIDEmployee())
-									itemCart.SetItemName(items[idItem].GetItemName())
-									itemCart.SetQuantity(qty)
-									cart[idItem] = &itemCart
+
+									if thisItem, ok := cart[idItem]; ok {
+										thisItem.SetIdItem(idItem)
+										thisItem.SetIdEmployee(items[idItem].GetIDEmployee())
+										thisItem.SetItemName(items[idItem].GetItemName())
+										thisItem.SetQuantity(thisItem.GetQuantity() + qty)
+										cart[idItem] = thisItem
+									} else {
+										itemCart.SetIdItem(idItem)
+										itemCart.SetIdEmployee(items[idItem].GetIDEmployee())
+										itemCart.SetItemName(items[idItem].GetItemName())
+										itemCart.SetQuantity(qty)
+										cart[idItem] = &itemCart
+									}
+
+									items[idItem].SetQuantity(items[idItem].GetQuantity() - qty)
 								case 3:
 									fmt.Println("\n---Cart")
 									fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
