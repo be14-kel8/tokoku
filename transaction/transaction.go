@@ -1,5 +1,9 @@
 package transaction
 
+import (
+	"database/sql"
+)
+
 type Transaction struct {
 	idTrans    int
 	idEmp      int
@@ -48,4 +52,8 @@ func (t *Transaction) GetNohp() string {
 
 func (t *Transaction) GetCreateDate() string {
 	return t.createDate
+}
+
+type TransAuth struct {
+	DB *sql.DB
 }
