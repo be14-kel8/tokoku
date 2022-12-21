@@ -16,7 +16,7 @@ func main() {
 	var conn = config.ConnectSQL(*cfg)
 	var employeeAuth = employee.EmployeeAuth{DB: conn}
 	var itemAuth = item.ItemAuth{DB: conn}
-	var CustAuth = customer.CustAuth{DB: conn}
+	var custAuth = customer.CustAuth{DB: conn}
 	//Menu Login
 	loginMenu := 0
 	for loginMenu != 9 {
@@ -104,11 +104,11 @@ func main() {
 						}
 
 					case 4:
-						CustAuth.ShowCust()
+						custAuth.ShowCust()
 						var noHp string
 						fmt.Print("Insert Phone Number : ")
 						fmt.Scanln(&noHp)
-						res, err := CustAuth.DeleteCust(noHp)
+						res, err := custAuth.DeleteCust(noHp)
 						if err != nil {
 							fmt.Println(err.Error())
 						}
@@ -138,11 +138,11 @@ func main() {
 						fmt.Print("\n--- Employee Menu\n")
 						fmt.Print("\nWelcome back, ", emp.GetName(), "\n")
 						fmt.Println("1. Insert item")
-						fmt.Println("2. Edit item")
-						fmt.Println("3. Update quantity")
-						fmt.Println("4. Add new customer")
-						fmt.Println("5. Add item to cart")
-						fmt.Println("6. Show cart")
+						fmt.Println("2. Show All items")
+						fmt.Println("3. Edit item")
+						fmt.Println("4. Update quantity")
+						fmt.Println("5. Add new customer")
+						fmt.Println("6. Transaction")
 						fmt.Println("9. Log out")
 						fmt.Print("Enter an option : ")
 						fmt.Scanln(&menuEmp)
@@ -170,8 +170,28 @@ func main() {
 								fmt.Println("Insert item failed")
 							}
 						case 2:
-
+							fmt.Println("List Items")
+							itemAuth.ShowItems()
 						case 3:
+							itemAuth.ShowItems()
+							var idItem int
+							var newName string
+							fmt.Print("Insert Id item : ")
+							fmt.Scanln(&idItem)
+							fmt.Print("Insert New Name  : ")
+							fmt.Scanln(&newName)
+							res, err := itemAuth.EditItems(idItem, newName)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("Update Name Success")
+
+							} else {
+								fmt.Println("Update Name failed")
+							}
+
+						case 4:
 							itemAuth.ShowItems()
 							var idItem, qty int
 							fmt.Print("Insert Id item : ")
@@ -188,7 +208,7 @@ func main() {
 							} else {
 								fmt.Println("Update Quantity failed")
 							}
-						case 4:
+						case 5:
 							var newCust customer.Customer
 							tmps := ""
 							fmt.Print("Insert Phone number : ")
@@ -199,7 +219,7 @@ func main() {
 							tmps = scanner.Text()
 							newCust.SetName(tmps)
 							newCust.SetIdEmployee(emp.GetId())
-							res, err := CustAuth.InsertCust(newCust)
+							res, err := custAuth.InsertCust(newCust)
 							if err != nil {
 								fmt.Println(err.Error())
 							}
@@ -209,10 +229,27 @@ func main() {
 							} else {
 								fmt.Println("Insert New Customer failed")
 							}
-						case 5:
-
 						case 6:
-
+							//Menu Transaksi
+							transMenu := 0
+							for transMenu != 9 {
+								fmt.Println("Transaction Menu")
+								fmt.Println("1. Show all items")
+								fmt.Println("2. Add item to cart")
+								fmt.Println("3. Show cart")
+								fmt.Println("4. Checkout")
+								fmt.Println("9. Back")
+								fmt.Print("Insert an option : ")
+								fmt.Scanln(&transMenu)
+								switch transMenu {
+								case 1:
+								case 2:
+								case 3:
+								case 4:
+								case 9:
+									break
+								}
+							}
 						case 9:
 							break
 						default:
