@@ -57,14 +57,14 @@ func main() {
 						var newEmp employee.Employee
 						var tmpS string
 						fmt.Print("\n---Employee Register\n")
-						fmt.Print("Insert username : ")
+						fmt.Print("Insert username\t: ")
 						fmt.Scanln(&tmpS)
 						newEmp.SetUsername(tmpS)
-						fmt.Print("Insert name : ")
+						fmt.Print("Insert name\t: ")
 						scanner.Scan()
 						tmpS = scanner.Text()
 						newEmp.SetName(tmpS)
-						fmt.Print("Insert password : ")
+						fmt.Print("Insert password\t: ")
 						fmt.Scanln(&tmpS)
 						newEmp.SetPassword(tmpS)
 						res, err := employeeAuth.RegisterEmp(newEmp)
@@ -77,9 +77,10 @@ func main() {
 							fmt.Println("Register Failed")
 						}
 					case 2:
+						fmt.Print("\n--- Delete Employee\n")
 						employeeAuth.ShowEmps()
 						var username string
-						fmt.Print("Insert username : ")
+						fmt.Print("\nEnter username that you want to delete : ")
 						fmt.Scanln(&username)
 						res, err := employeeAuth.DeleteEmp(username)
 						if err != nil {
@@ -93,7 +94,7 @@ func main() {
 					case 3:
 						itemAuth.ShowItems()
 						var idItem int
-						fmt.Print("Insert id item : ")
+						fmt.Print("\nEnter id item that you want to delete : ")
 						fmt.Scanln(&idItem)
 						res, err := itemAuth.DeleteItem(idItem)
 						if err != nil {
@@ -108,7 +109,7 @@ func main() {
 					case 4:
 						custAuth.ShowCust()
 						var noHp string
-						fmt.Print("Insert Phone Number : ")
+						fmt.Print("\nEnter phone number of customer you want to delete : ")
 						fmt.Scanln(&noHp)
 						res, err := custAuth.DeleteCust(noHp)
 						if err != nil {
@@ -152,11 +153,11 @@ func main() {
 						switch menuEmp {
 						case 1:
 							var newItem item.Item
-							fmt.Print("Insert item name : ")
+							fmt.Print("Insert item name\t: ")
 							scanner.Scan()
 							tmps := scanner.Text()
 							newItem.SetItemName(tmps)
-							fmt.Print("Insert quantity : ")
+							fmt.Print("Insert quantity\t\t: ")
 							tmpi := 0
 							fmt.Scanln(&tmpi)
 							newItem.SetQuantity(tmpi)
@@ -172,15 +173,15 @@ func main() {
 								fmt.Println("Insert item failed")
 							}
 						case 2:
-							fmt.Println("List Items")
+							fmt.Print("\n--- List All Items\n")
 							itemAuth.ShowItems()
 						case 3:
 							itemAuth.ShowItems()
 							var idItem int
 							var newName string
-							fmt.Print("Insert Id item : ")
+							fmt.Print("Insert Id item\t: ")
 							fmt.Scanln(&idItem)
-							fmt.Print("Insert New Name  : ")
+							fmt.Print("Insert New Name\t: ")
 							fmt.Scanln(&newName)
 							res, err := itemAuth.EditItems(idItem, newName)
 							if err != nil {
@@ -196,9 +197,9 @@ func main() {
 						case 4:
 							itemAuth.ShowItems()
 							var idItem, qty int
-							fmt.Print("Insert Id item : ")
+							fmt.Print("Insert Id item\t: ")
 							fmt.Scanln(&idItem)
-							fmt.Print("Insert New Quantity : ")
+							fmt.Print("Insert New Quantity\t: ")
 							fmt.Scanln(&qty)
 							res, err := itemAuth.UpdateQty(idItem, qty)
 							if err != nil {
@@ -213,10 +214,10 @@ func main() {
 						case 5:
 							var newCust customer.Customer
 							tmps := ""
-							fmt.Print("Insert Phone number : ")
+							fmt.Print("Insert Phone number\t: ")
 							fmt.Scanln(&tmps)
 							newCust.SetNohp(tmps)
-							fmt.Print("Insert Customer Name : ")
+							fmt.Print("Insert Customer Name\t: ")
 							scanner.Scan()
 							tmps = scanner.Text()
 							newCust.SetName(tmps)
@@ -257,33 +258,25 @@ func main() {
 									idItem, qty := 0, 0
 									for _, v := range items {
 										if v.GetQuantity() > 0 {
-											fmt.Print("Item ID : ", v.GetIdItem(), "\n")
-											fmt.Print("Item name : ", v.GetItemName(), "\n")
-											fmt.Print("Quantity available : ", v.GetQuantity(), "\n\n")
+											fmt.Print("Item ID\t: ", v.GetIdItem(), "\n")
+											fmt.Print("Item name\t: ", v.GetItemName(), "\n")
+											fmt.Print("Quantity available\t: ", v.GetQuantity(), "\n\n")
 										}
 									}
 
 									//proses masukin ke keranjang
-									fmt.Print("Insert ID item : ")
+									fmt.Print("Insert ID item\t: ")
 									fmt.Scanln(&idItem)
-									fmt.Print("Insert quantity : ")
+									fmt.Print("Insert quantity\t: ")
 									fmt.Scanln(&qty)
-									if qty > items[idItem].GetQuantity() {
-										fmt.Println("\nThe quantity is higher than the maximum available")
+									if _, ok := items[idItem]; !ok {
+										fmt.Println("\nThe item you choose doesn't exist")
 										continue
 									}
-									// found := false
-									// for _, i := range items {
-									// 	if i == items[idItem].GetIdItem() {
-									// 		found = true
-									// 		continue
-									// 	}
-									// 	if found {
-									// 		fmt.Println("Id item not exist")
-									// 		continue
-									// 	}
-									// }
-
+									if qty > items[idItem].GetQuantity() {
+										fmt.Println("\nThe quantity you've entered is higher than the maximum available")
+										continue
+									}
 									// ngecek apakah inputan ada di cart
 									//kondisi true
 									if thisItem, ok := cart[idItem]; ok {
@@ -320,11 +313,11 @@ func main() {
 										fmt.Print(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity(), "\n")
 									}
 									tmp, noHp := "", ""
-									fmt.Print("Are you sure want to finish your cart? (y/n) : ")
+									fmt.Print("Are you sure want to finish your cart? (y/n)\t: ")
 									fmt.Scanln(&tmp)
 
 									if tmp == "y" {
-										fmt.Print("Insert customer phone number : ")
+										fmt.Print("Insert customer phone number\t: ")
 										fmt.Scanln(&noHp)
 										res, err := transAuth.Checkout(emp.GetId(), noHp, cart)
 										if err != nil {

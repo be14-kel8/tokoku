@@ -122,3 +122,15 @@ func (ta *TransAuth) Checkout(idEmp int, noHp string, cart map[int]*item.Item) (
 
 	return true, nil
 }
+
+// func (ta *TransAuth) PrintReceipt(transId int) (bool, error) {
+
+// }
+
+// func (ta *TransAuth) DeleteTrans(transId int) (bool, error) {
+
+// }
+
+// func (ta *TransAuth) DeleteItemTrans(transId int) (bool, error) {
+
+// }
