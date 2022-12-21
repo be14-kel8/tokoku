@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"log"
+	"strings"
 )
 
 type Employee struct {
@@ -70,6 +71,19 @@ func (em *EmployeeAuth) RegisterEmp(newEmp Employee) (bool, error) {
 	if em.Duplicate(newEmp.GetUsername()) {
 		return false, errors.New("\nUsername already exist")
 	}
+	// // password validation
+	length := len(newEmp.GetPassword())
+	str := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	Cstr := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	numb := "0123456789"
+	if length < 8 {
+		return false, errors.New("Password atleast 8 character")
+	} else if !strings.ContainsAny(newEmp.GetPassword(), numb) || !strings.ContainsAny(newEmp.GetPassword(), str) {
+		return false, errors.New("Password need combination number and character")
+	} else if !strings.ContainsAny(newEmp.GetPassword(), Cstr) {
+		return false, errors.New("Password need capital character")
+	}
+
 	//execute
 	res, err := registerQry.Exec(newEmp.GetUsername(), newEmp.GetName(), newEmp.GetPassword())
 	if err != nil {
@@ -101,6 +115,7 @@ func (em *EmployeeAuth) Login(username, password string) (Employee, error) {
 		return emp, errors.New("\nUser not found or wrong password")
 	}
 	return emp, nil
+
 }
 
 func (em *EmployeeAuth) ShowEmps() {
@@ -124,11 +139,10 @@ func (em *EmployeeAuth) ShowEmps() {
 		emp.SetName(tmpName)
 		emps = append(emps, emp)
 	}
-	// tanya mas jerry 
+	// tanya mas jerry
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}
-
 
 	for _, v := range emps {
 		fmt.Println("")

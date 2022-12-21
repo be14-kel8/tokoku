@@ -213,7 +213,7 @@ func (ia *ItemAuth) ItemList() map[int]*Item {
 		if err != nil {
 			errors.New("error scan ")
 		}
-
+		// map, 1 id = valuenya properti struct
 		items[tmpId] = &Item{tmpId, tmpIdE, tmpName, tmpQ}
 
 	}
