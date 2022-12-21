@@ -51,11 +51,26 @@ type ItemAuth struct {
 	DB *sql.DB
 }
 
+func (ia *ItemAuth) DuplicateItem(idItem string) bool {
+	res := ia.DB.QueryRow("SELECT id_item FROM items WHERE item_name =?", idItem)
+	idExist := 0
+	err := res.Scan(&idExist)
+	if err != nil {
+		return false
+	}
+	return true
+}
+
 func (ia *ItemAuth) InsertItem(newItem Item) (bool, error) {
 	InsertQry, err := ia.DB.Prepare("INSERT INTO items (id_employee,item_name,quantity) values (?,?,?)")
 	if err != nil {
 
 		return false, errors.New("column items not match")
+	}
+
+	//duplicate item
+	if ia.DuplicateItem(newItem.GetItemName()) {
+		return false, errors.New("Item already exist")
 	}
 
 	res, err := InsertQry.Exec(newItem.GetIDEmployee(), newItem.GetItemName(), newItem.GetQuantity())

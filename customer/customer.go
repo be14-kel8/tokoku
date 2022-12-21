@@ -41,10 +41,26 @@ type CustAuth struct {
 	DB *sql.DB
 }
 
+func (ca *CustAuth) DuplicateCust(noHP string) bool {
+	res := ca.DB.QueryRow("SELECT customer_name FROM customers WHERE no_hp = ?", noHP)
+	nohpExist := ""
+	err := res.Scan(&nohpExist)
+	if err != nil {
+		return false
+	}
+	return true
+
+}
+
 func (ca *CustAuth) InsertCust(newCustomer Customer) (bool, error) {
 	InsertQry, err := ca.DB.Prepare("INSERT INTO customers values (?,?,?)")
 	if err != nil {
 		return false, errors.New("Insert query customers error")
+	}
+	//Duplicate
+	if ca.DuplicateCust(newCustomer.GetNohp()) {
+		return false, errors.New("Phone Number already exist")
+
 	}
 
 	res, err := InsertQry.Exec(newCustomer.GetNohp(), newCustomer.GetIdEmployee(), newCustomer.GetName())
@@ -66,7 +82,7 @@ func (ca *CustAuth) InsertCust(newCustomer Customer) (bool, error) {
 func (ca *CustAuth) ShowCust() {
 	rows, err := ca.DB.Query("SELECT * FROM customers")
 	if err != nil {
-		errors.New("Error select query")
+		errors.New("error select query")
 	}
 	defer rows.Close()
 
