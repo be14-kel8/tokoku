@@ -121,6 +121,7 @@ func main() {
 							fmt.Println("Delete Customer  failed")
 						}
 					case 5:
+						//Delete Transaction
 
 					case 9:
 						continue
@@ -303,8 +304,8 @@ func main() {
 									if len(cart) == 0 {
 										fmt.Println("Your cart empty, please add item to cart")
 									} else {
+										fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
 										for _, v := range cart {
-											fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
 											fmt.Print(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity(), "\n")
 										}
 									}

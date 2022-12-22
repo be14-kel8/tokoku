@@ -140,13 +140,48 @@ func (ta *TransAuth) Checkout(idEmp int, noHp string, cart map[int]*item.Item) (
 	return true, nil
 }
 
-// func (ta *TransAuth) DeleteItemTrans(transId int) (bool, error) {
+func (ta *TransAuth) DeleteTrans(transId int) (bool, error) {
+	ta.DeleteItemTrans(transId)
+	deleteQry, err := ta.DB.Prepare("DELETE FROM transactions WHERE id_transaction = ?")
+	if err != nil {
+		return false, errors.New("error delete query")
+	}
+	res, err := deleteQry.Exec(transId)
+	if err != nil {
+		return false, errors.New("idItem not match")
+	}
 
-// }
+	affectedRows, err := res.RowsAffected()
+	if err != nil {
+		return false, errors.New("error after delete")
+	}
+	if affectedRows <= 0 {
+		return false, errors.New("0 affected rows")
 
-// func (ta *TransAuth) DeleteTrans(transId int) (bool, error) {
+	}
+	return true, nil
+}
 
-// }
+func (ta *TransAuth) DeleteItemTrans(transId int) (bool, error) {
+	deleteQry, err := ta.DB.Prepare("DELETE FROM item_transaction WHERE id_transaction = ?")
+	if err != nil {
+		return false, errors.New("error delete query")
+	}
+	res, err := deleteQry.Exec(transId)
+	if err != nil {
+		return false, errors.New("idItem not match")
+	}
+
+	affectedRows, err := res.RowsAffected()
+	if err != nil {
+		return false, errors.New("error after delete")
+	}
+	if affectedRows <= 0 {
+		return false, errors.New("0 affected rows")
+
+	}
+	return true, nil
+}
 
 func (ta *TransAuth) GetTransaction() map[int]*Transaction {
 	rows, err := ta.DB.Query("SELECT id_transaction, name, customer_name, created_date FROM transactions t JOIN customers c ON t.no_hp = c.no_hp JOIN employees e ON t.id_employee = e.id_employee")
