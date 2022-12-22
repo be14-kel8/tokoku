@@ -67,6 +67,7 @@ func (em *EmployeeAuth) RegisterEmp(newEmp Employee) (bool, error) {
 	if err != nil {
 		return false, errors.New("Column not match")
 	}
+
 	//duplicate
 	if em.Duplicate(newEmp.GetUsername()) {
 		return false, errors.New("\nUsername already exist")
@@ -140,7 +141,7 @@ func (em *EmployeeAuth) ShowEmps() {
 		emp.SetName(tmpName)
 		emps = append(emps, emp)
 	}
-	// tanya mas jerry
+
 	if err := rows.Err(); err != nil {
 		log.Fatal(err)
 	}
@@ -150,6 +151,9 @@ func (em *EmployeeAuth) ShowEmps() {
 		fmt.Println("ID Employee\t\t: ", v.id)
 		fmt.Println("Employee Username\t: ", v.username)
 		fmt.Println("Employee Name\t\t: ", v.name)
+	}
+	if len(emps) == 0 {
+		fmt.Println("list employee active has no record")
 	}
 }
 

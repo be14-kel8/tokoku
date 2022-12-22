@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	// "strings"
 	"tokoku/config"
 	"tokoku/customer"
 	"tokoku/employee"
@@ -91,6 +92,7 @@ func main() {
 						} else {
 							fmt.Println("Delete Employee failed")
 						}
+
 					case 3:
 						fmt.Print("\n--- Delete Item\n")
 						itemAuth.ShowItems()
@@ -192,6 +194,10 @@ func main() {
 							fmt.Print("Insert quantity\t\t: ")
 							tmpi := 0
 							fmt.Scanln(&tmpi)
+							// reader := bufio.NewReader(os.Stdin)
+							// input,_ := reader.ReadString('\n')
+							// input = strings.TrimSpace(input)
+							
 							newItem.SetQuantity(tmpi)
 							newItem.SetIdEmployee(emp.GetId())
 							res, err := itemAuth.InsertItem(newItem)
