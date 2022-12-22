@@ -120,12 +120,13 @@ func (ia *ItemAuth) ShowItems() {
 		log.Fatal(err)
 	}
 
+	fmt.Println("Item Id\t\tEmployee Id\t\tItem Name\t\tQuantity")
 	for _, v := range items {
-		fmt.Println("")
-		fmt.Println("ID Item\t\t: ", v.idItem)
-		fmt.Println("ID Employee\t: ", v.idEmployee)
-		fmt.Println("Item Name \t: ", v.itemName)
-		fmt.Println("Item Quantity\t: ", v.quantity)
+		fmt.Println(v.idItem, "\t\t", v.idEmployee, "\t\t", v.itemName, "\t\t", v.quantity)
+		// fmt.Println("ID Item\t\t: ", v.idItem)
+		// fmt.Println("ID Employee\t: ", v.idEmployee)
+		// fmt.Println("Item Name \t: ", v.itemName)
+		// fmt.Println("Item Quantity\t: ", v.quantity)
 	}
 	if len(items) == 0 {
 		fmt.Println("No items record")

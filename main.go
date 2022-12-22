@@ -94,6 +94,7 @@ func main() {
 						}
 
 					case 3:
+						fmt.Print("\n--- Delete Item\n")
 						itemAuth.ShowItems()
 						var idItem int
 						fmt.Print("\nEnter id item that you want to delete : ")
@@ -109,6 +110,7 @@ func main() {
 						}
 
 					case 4:
+						fmt.Print("\n--- Delete Customer\n")
 						custAuth.ShowCust()
 						var noHp string
 						fmt.Print("\nEnter phone number of customer you want to delete : ")
@@ -124,16 +126,19 @@ func main() {
 						}
 					case 5:
 						//Delete Transaction
+						fmt.Print("\n--- Delete Transaction\n")
 						listTransaction := transAuth.GetTransaction()
 						if len(listTransaction) == 0 {
 							fmt.Println("Empty history transaction")
 							continue
 						}
+						fmt.Println("\n--- Delete Transaction")
+						fmt.Println("Transaction id\t\tEmployee Name\t\tCutomer Name\t\tTransaction Date")
 						for _, v := range listTransaction {
-							fmt.Println(v.GetIdTrans(), v.GetEmpName(), v.GetCustName(), v.GetCreateDate())
+							fmt.Println(v.GetIdTrans(), "\t\t", v.GetEmpName(), "\t\t", v.GetCustName(), "\t\t", v.GetCreateDate())
 						}
 						var idtrans int
-						fmt.Print("Insert ID transaction : ")
+						fmt.Print("Enter transaction ID that you want to delete : ")
 						fmt.Scanln(&idtrans)
 						if _, ok := listTransaction[idtrans]; ok {
 							res, err := transAuth.DeleteTrans(idtrans)
@@ -180,6 +185,7 @@ func main() {
 
 						switch menuEmp {
 						case 1:
+							fmt.Print("\n--- Insert Item\n")
 							var newItem item.Item
 							fmt.Print("Insert item name\t: ")
 							scanner.Scan()
@@ -208,6 +214,7 @@ func main() {
 							fmt.Print("\n--- List All Items\n")
 							itemAuth.ShowItems()
 						case 3:
+							fmt.Print("\n--- Edit Item\n")
 							itemAuth.ShowItems()
 							var idItem int
 							var newName string
@@ -227,9 +234,10 @@ func main() {
 							}
 
 						case 4:
+							fmt.Print("\n--- Edit Quantity\n")
 							itemAuth.ShowItems()
 							var idItem, qty int
-							fmt.Print("Insert Id item\t: ")
+							fmt.Print("Insert Id item\t\t: ")
 							fmt.Scanln(&idItem)
 							fmt.Print("Insert New Quantity\t: ")
 							fmt.Scanln(&qty)
@@ -244,6 +252,7 @@ func main() {
 								fmt.Println("Update Quantity failed")
 							}
 						case 5:
+							fmt.Print("\n--- Add New Customer\n")
 							var newCust customer.Customer
 							tmps := ""
 							fmt.Print("Insert Phone number\t: ")
@@ -289,16 +298,15 @@ func main() {
 									fmt.Print("\n--- Add item to cart\n")
 									var itemCart item.Item
 									idItem, qty := 0, 0
+									fmt.Println("Item Id\t\t\tItem Name\t\tQuantity")
 									for _, v := range items {
 										if v.GetQuantity() > 0 {
-											fmt.Print("Item ID\t: ", v.GetIdItem(), "\n")
-											fmt.Print("Item name\t: ", v.GetItemName(), "\n")
-											fmt.Print("Quantity available\t: ", v.GetQuantity(), "\n\n")
+											fmt.Println(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity())
 										}
 									}
 
 									//proses masukin ke keranjang
-									fmt.Print("Insert ID item\t: ")
+									fmt.Print("\nInsert ID item\t: ")
 									fmt.Scanln(&idItem)
 
 									fmt.Print("Insert quantity\t: ")
@@ -333,7 +341,7 @@ func main() {
 									// show isi cart
 									fmt.Println("\n---Cart")
 									if len(cart) == 0 {
-										fmt.Println("Your cart empty, please add item to cart")
+										fmt.Println("\nYour cart empty, please add item to cart")
 									} else {
 										fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
 										for _, v := range cart {
@@ -341,7 +349,12 @@ func main() {
 										}
 									}
 								case 4:
+									//Checkout
 									fmt.Println("\n--- Cart")
+									if len(cart) == 0 {
+										fmt.Println("\nYour is cart empty, please add item to cart")
+										continue
+									}
 									fmt.Print("Item ID\t\tItem Name\t\tQuantity\n")
 									for _, v := range cart {
 										fmt.Print(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQuantity(), "\n")
