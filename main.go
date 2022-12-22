@@ -266,23 +266,7 @@ func main() {
 									//proses masukin ke keranjang
 									fmt.Print("Insert ID item\t: ")
 									fmt.Scanln(&idItem)
-<<<<<<< HEAD
 
-									fmt.Print("Insert quantity : ")
-									fmt.Scanln(&qty)
-									// jika item tidak tersedia dilist untuk dimasukin ke cart
-
-									if val, found := items[idItem]; found {
-										if qty > val.GetQuantity() {
-											fmt.Println("\nThe quantity is higher than the maximum available")
-											continue
-										}
-									} else {
-										fmt.Println("Id item not exist")
-										break
-									}
-
-=======
 									fmt.Print("Insert quantity\t: ")
 									fmt.Scanln(&qty)
 									if _, ok := items[idItem]; !ok {
@@ -293,7 +277,7 @@ func main() {
 										fmt.Println("\nThe quantity you've entered is higher than the maximum available")
 										continue
 									}
->>>>>>> a7d3e32eb7693155a630c59776dacc00c0e4ddf2
+
 									// ngecek apakah inputan ada di cart
 									//kondisi true
 									if thisItem, ok := cart[idItem]; ok {
