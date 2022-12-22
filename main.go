@@ -122,6 +122,31 @@ func main() {
 						}
 					case 5:
 						//Delete Transaction
+						listTransaction := transAuth.GetTransaction()
+						if len(listTransaction) == 0 {
+							fmt.Println("Empty history transaction")
+							continue
+						}
+						for _, v := range listTransaction {
+							fmt.Println(v.GetIdTrans(), v.GetEmpName(), v.GetCustName(), v.GetCreateDate())
+						}
+						var idtrans int
+						fmt.Print("Insert ID transaction : ")
+						fmt.Scanln(&idtrans)
+						if _, ok := listTransaction[idtrans]; ok {
+							res, err := transAuth.DeleteTrans(idtrans)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("Delete Transaction success")
+							} else {
+								fmt.Println("Delete Transaction  failed")
+							}
+
+						} else {
+							fmt.Println("Transaction id not exist")
+						}
 
 					case 9:
 						continue
@@ -269,6 +294,7 @@ func main() {
 									//proses masukin ke keranjang
 									fmt.Print("Insert ID item\t: ")
 									fmt.Scanln(&idItem)
+
 									fmt.Print("Insert quantity\t: ")
 									fmt.Scanln(&qty)
 									if _, ok := items[idItem]; !ok {
@@ -279,6 +305,7 @@ func main() {
 										fmt.Println("\nThe quantity you've entered is higher than the maximum available")
 										continue
 									}
+
 									// ngecek apakah inputan ada di cart
 									//kondisi true
 									if thisItem, ok := cart[idItem]; ok {

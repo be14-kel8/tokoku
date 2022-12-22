@@ -70,6 +70,7 @@ func (ia *ItemTransaction) GetQty() int {
 	return ia.qty
 }
 
+// untuk checkout
 func (ta *TransAuth) insertTransaction(idEmp int, noHp string) (bool, error) {
 	InsertQry, err := ta.DB.Prepare("INSERT INTO transactions (id_employee,no_hp,created_date) values (?,?,?)")
 	if err != nil {
@@ -140,6 +141,8 @@ func (ta *TransAuth) Checkout(idEmp int, noHp string, cart map[int]*item.Item) (
 	return true, nil
 }
 
+
+//delete transaction
 func (ta *TransAuth) DeleteTrans(transId int) (bool, error) {
 	ta.DeleteItemTrans(transId)
 	deleteQry, err := ta.DB.Prepare("DELETE FROM transactions WHERE id_transaction = ?")
@@ -183,6 +186,8 @@ func (ta *TransAuth) DeleteItemTrans(transId int) (bool, error) {
 	return true, nil
 }
 
+
+// print nota
 func (ta *TransAuth) GetTransaction() map[int]*Transaction {
 	rows, err := ta.DB.Query("SELECT id_transaction, name, customer_name, created_date FROM transactions t JOIN customers c ON t.no_hp = c.no_hp JOIN employees e ON t.id_employee = e.id_employee")
 	if err != nil {

@@ -76,6 +76,7 @@ func (em *EmployeeAuth) RegisterEmp(newEmp Employee) (bool, error) {
 	str := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	Cstr := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	numb := "0123456789"
+
 	if length < 8 {
 		return false, errors.New("Password atleast 8 character")
 	} else if !strings.ContainsAny(newEmp.GetPassword(), numb) || !strings.ContainsAny(newEmp.GetPassword(), str) {
