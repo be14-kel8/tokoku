@@ -8,6 +8,7 @@ import (
 	"tokoku/customer"
 	"tokoku/employee"
 	"tokoku/item"
+	"tokoku/transaction"
 )
 
 func main() {
