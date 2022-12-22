@@ -199,7 +199,3 @@ func (ta *TransAuth) GetItemsTransaction(idTrans int) []ItemTransaction {
 
 	return listItemTrans
 }
-
-// func (ta *TransAuth) PrintReceipt(idTrans, transList map[int]*Transaction) {
-
-// }
