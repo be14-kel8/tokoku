@@ -244,6 +244,7 @@ func main() {
 								fmt.Println("2. Add item to cart")
 								fmt.Println("3. Show cart")
 								fmt.Println("4. Checkout")
+								fmt.Println("5. Print receipt")
 								fmt.Println("9. Back")
 								fmt.Print("Enter an option : ")
 								fmt.Scanln(&transMenu)
@@ -294,7 +295,6 @@ func main() {
 									}
 									// update di show item ketika mau masukin keranjang
 									items[idItem].SetQuantity(items[idItem].GetQuantity() - qty)
-
 								case 3:
 									// show isi cart
 									fmt.Println("\n---Cart")
@@ -337,6 +337,29 @@ func main() {
 									} else {
 										fmt.Println("Wrong Input")
 									}
+								case 5:
+									//Print Receipt
+									fmt.Println("\n--- Transaction List")
+									listTrans := transAuth.GetTransaction()
+									fmt.Println("ID\t\tEmployee Name\t\tCustomer Name\t\tTransaction Date")
+									for _, v := range listTrans {
+										fmt.Println(v.GetIdTrans(), "\t", v.GetEmpName(), "\t\t", v.GetCustName(), "\t\t", v.GetCreateDate())
+									}
+									idTrans := 0
+									fmt.Print("\nEnter transaction id that you want to print : ")
+									fmt.Scanln(&idTrans)
+									fmt.Println("\n--- Transaction Details")
+									fmt.Println("Transaction ID\t\t: ", listTrans[idTrans].GetIdTrans())
+									fmt.Println("Employee Name\t\t: ", listTrans[idTrans].GetEmpName())
+									fmt.Println("Customer Name\t\t: ", listTrans[idTrans].GetCustName())
+									fmt.Println("Transaction Date\t: ", listTrans[idTrans].GetCreateDate())
+									fmt.Println()
+
+									listItems := transAuth.GetItemsTransaction(idTrans)
+									fmt.Println("Item ID\t\t   Item Name\t\t      Quantity")
+									for _, v := range listItems {
+										fmt.Println(v.GetIdItem(), "\t\t", v.GetItemName(), "\t\t", v.GetQty())
+									}
 								case 9:
 									continue
 								default:
@@ -354,6 +377,7 @@ func main() {
 		case 2:
 
 		case 9:
+			fmt.Println("\nThank you, see you later ...")
 			continue
 		default:
 			fmt.Println("\nSorry, option doesn't exist")
