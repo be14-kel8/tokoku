@@ -110,6 +110,9 @@ func (ca *CustAuth) ShowCust() {
 		fmt.Println("Id Employee\t\t: ", v.idEmployee)
 		fmt.Println("Customer Name\t\t: ", v.name)
 	}
+	if len(custs) == 0{
+		fmt.Println("has no record")
+	}
 }
 
 func (ca *CustAuth) DeleteCust(noHp string) (bool, error) {

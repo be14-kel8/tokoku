@@ -127,6 +127,9 @@ func (ia *ItemAuth) ShowItems() {
 		fmt.Println("Item Name \t: ", v.itemName)
 		fmt.Println("Item Quantity\t: ", v.quantity)
 	}
+	if len(items) == 0 {
+		fmt.Println("No items record")
+	}
 }
 
 func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
@@ -152,6 +155,7 @@ func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
 }
 
 func (ia *ItemAuth) UpdateQty(idItem, qty int) (bool, error) {
+
 	UpdateQry, err := ia.DB.Prepare("UPDATE items SET quantity = ? WHERE id_item = ?")
 	if err != nil {
 		return false, errors.New("error update query")
