@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+
 	// "strings"
 	"tokoku/config"
 	"tokoku/customer"
@@ -73,56 +74,81 @@ func main() {
 							fmt.Println(err.Error())
 						}
 						if res {
-							fmt.Println("Register Success")
+							fmt.Println("\nRegister Success")
 						} else {
-							fmt.Println("Register Failed")
+							fmt.Println("\nRegister Failed")
 						}
 					case 2:
 						fmt.Print("\n--- Delete Employee\n")
 						employeeAuth.ShowEmps()
-						var username string
+						var username, yn string
 						fmt.Print("\nEnter username that you want to delete : ")
 						fmt.Scanln(&username)
-						res, err := employeeAuth.DeleteEmp(username)
-						if err != nil {
-							fmt.Println(err.Error())
-						}
-						if res {
-							fmt.Println("Delete Employee success")
+						fmt.Print("\nAre you sure want to delete username ", username, " (y/n) : ")
+						fmt.Scanln(&yn)
+						if yn == "y" {
+							res, err := employeeAuth.DeleteEmp(username)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("\nDelete Employee success")
+							} else {
+								fmt.Println("\nDelete Employee failed")
+							}
+						} else if yn == "n" {
+							continue
 						} else {
-							fmt.Println("Delete Employee failed")
+							fmt.Println("\nWrong input")
 						}
-
 					case 3:
 						fmt.Print("\n--- Delete Item\n")
 						itemAuth.ShowItems()
 						var idItem int
 						fmt.Print("\nEnter id item that you want to delete : ")
 						fmt.Scanln(&idItem)
-						res, err := itemAuth.DeleteItem(idItem)
-						if err != nil {
-							fmt.Println(err.Error())
-						}
-						if res {
-							fmt.Println("Delete item success")
-						} else {
-							fmt.Println("Delete item failed")
-						}
+						yn := ""
+						fmt.Print("\nAre you sure want to delete item with id ", idItem, " (y/n) : ")
+						fmt.Scanln(&yn)
+						if yn == "y" {
+							res, err := itemAuth.DeleteItem(idItem)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("\nDelete item success")
+							} else {
+								fmt.Println("\nDelete item failed")
+							}
 
+						} else if yn == "n" {
+							continue
+						} else {
+							fmt.Println("\nWrong input")
+						}
 					case 4:
 						fmt.Print("\n--- Delete Customer\n")
 						custAuth.ShowCust()
 						var noHp string
 						fmt.Print("\nEnter phone number of customer you want to delete : ")
 						fmt.Scanln(&noHp)
-						res, err := custAuth.DeleteCust(noHp)
-						if err != nil {
-							fmt.Println(err.Error())
-						}
-						if res {
-							fmt.Println("Delete Customer success")
+						yn := ""
+						fmt.Print("\nAre you sure want to delete customer with phone number ", noHp, " (y/n) : ")
+						fmt.Scanln(&yn)
+						if yn == "y" {
+							res, err := custAuth.DeleteCust(noHp)
+							if err != nil {
+								fmt.Println(err.Error())
+							}
+							if res {
+								fmt.Println("\nDelete Customer success")
+							} else {
+								fmt.Println("\nDelete Customer  failed")
+							}
+						} else if yn == "n" {
+							continue
 						} else {
-							fmt.Println("Delete Customer  failed")
+							fmt.Println("\nWrong input")
 						}
 					case 5:
 						//Delete Transaction
@@ -140,21 +166,29 @@ func main() {
 						var idtrans int
 						fmt.Print("Enter transaction ID that you want to delete : ")
 						fmt.Scanln(&idtrans)
-						if _, ok := listTransaction[idtrans]; ok {
-							res, err := transAuth.DeleteTrans(idtrans)
-							if err != nil {
-								fmt.Println(err.Error())
-							}
-							if res {
-								fmt.Println("Delete Transaction success")
+						yn := ""
+						fmt.Print("\nAre you sure want to delete transaction with ID ", idtrans, " (y/n) : ")
+						fmt.Scanln(&yn)
+						if yn == "y" {
+							if _, ok := listTransaction[idtrans]; ok {
+								res, err := transAuth.DeleteTrans(idtrans)
+								if err != nil {
+									fmt.Println(err.Error())
+								}
+								if res {
+									fmt.Println("\nDelete Transaction success")
+								} else {
+									fmt.Println("\nDelete Transaction  failed")
+								}
+
 							} else {
-								fmt.Println("Delete Transaction  failed")
+								fmt.Println("Transaction id not exist")
 							}
-
+						} else if yn == "n" {
+							continue
 						} else {
-							fmt.Println("Transaction id not exist")
+							fmt.Println("\nWrong input")
 						}
-
 					case 9:
 						continue
 					default:
@@ -197,7 +231,7 @@ func main() {
 							// reader := bufio.NewReader(os.Stdin)
 							// input,_ := reader.ReadString('\n')
 							// input = strings.TrimSpace(input)
-							
+
 							newItem.SetQuantity(tmpi)
 							newItem.SetIdEmployee(emp.GetId())
 							res, err := itemAuth.InsertItem(newItem)
@@ -205,10 +239,10 @@ func main() {
 								fmt.Println(err.Error())
 							}
 							if res {
-								fmt.Println("Insert item Success")
+								fmt.Println("\nInsert item Success")
 
 							} else {
-								fmt.Println("Insert item failed")
+								fmt.Println("\nInsert item failed")
 							}
 						case 2:
 							fmt.Print("\n--- List All Items\n")
@@ -221,16 +255,17 @@ func main() {
 							fmt.Print("Insert Id item\t: ")
 							fmt.Scanln(&idItem)
 							fmt.Print("Insert New Name\t: ")
-							fmt.Scanln(&newName)
+							scanner.Scan()
+							newName = scanner.Text()
 							res, err := itemAuth.EditItems(idItem, newName)
 							if err != nil {
 								fmt.Println(err.Error())
 							}
 							if res {
-								fmt.Println("Update Name Success")
+								fmt.Println("\nUpdate Name Success")
 
 							} else {
-								fmt.Println("Update Name failed")
+								fmt.Println("\nUpdate Name failed")
 							}
 
 						case 4:
@@ -246,10 +281,10 @@ func main() {
 								fmt.Println(err.Error())
 							}
 							if res {
-								fmt.Println("Update Quantity Success")
+								fmt.Println("\nUpdate Quantity Success")
 
 							} else {
-								fmt.Println("Update Quantity failed")
+								fmt.Println("\nUpdate Quantity failed")
 							}
 						case 5:
 							fmt.Print("\n--- Add New Customer\n")
@@ -268,10 +303,10 @@ func main() {
 								fmt.Println(err.Error())
 							}
 							if res {
-								fmt.Println("Insert New Customer Success")
+								fmt.Println("\nInsert New Customer Success")
 
 							} else {
-								fmt.Println("Insert New Customer failed")
+								fmt.Println("\nInsert New Customer failed")
 							}
 						case 6:
 							//Menu Transaksi
@@ -422,7 +457,7 @@ func main() {
 				}
 			}
 		case 2:
-
+			fmt.Println("\n--- Tokoku Project\nTokoku project merupakan project yang dikerjakan sebagai syarat untuk dapat lulus pada unit 1 program immersive backend Alterra Academy.\nProject ini dikerjakan oleh kelompok 8 dengan anggota :\n1. Muhamad Fauzan Putra\n2. Thomas Gianto")
 		case 9:
 			fmt.Println("\nThank you, see you later ...")
 			continue
