@@ -79,11 +79,11 @@ func (em *EmployeeAuth) RegisterEmp(newEmp Employee) (bool, error) {
 	numb := "0123456789"
 
 	if length < 8 {
-		return false, errors.New("Password atleast 8 character")
+		return false, errors.New("\nPassword atleast 8 character")
 	} else if !strings.ContainsAny(newEmp.GetPassword(), numb) || !strings.ContainsAny(newEmp.GetPassword(), str) {
-		return false, errors.New("Password need combination number and character")
+		return false, errors.New("\nPassword need combination number and character")
 	} else if !strings.ContainsAny(newEmp.GetPassword(), Cstr) {
-		return false, errors.New("Password need capital character")
+		return false, errors.New("\nPassword need capital character")
 	}
 
 	//execute
