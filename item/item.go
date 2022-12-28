@@ -141,7 +141,7 @@ func (ia *ItemAuth) DeleteItem(idItem int) (bool, error) {
 
 	res, err := deleteQry.Exec(idItem)
 	if err != nil {
-		return false, errors.New("idItem not match")
+		return false, errors.New("error exec query")
 	}
 
 	affectedRows, err := res.RowsAffected()

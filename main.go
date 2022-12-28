@@ -347,7 +347,7 @@ func main() {
 									fmt.Print("Insert quantity\t: ")
 									fmt.Scanln(&qty)
 									if _, ok := items[idItem]; !ok {
-										fmt.Println("\nThe item you choose doesn't exist")
+										fmt.Println("\nThe item you choose doesn't exist/available")
 										continue
 									}
 									if qty > items[idItem].GetQuantity() {
